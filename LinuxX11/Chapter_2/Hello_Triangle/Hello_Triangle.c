@@ -80,14 +80,14 @@ int Init ( ESContext *esContext )
    esContext->userData = malloc(sizeof(UserData));
 
    UserData *userData = esContext->userData;
-   GLbyte vShaderStr[] =  
+   const char* vShaderStr =
       "attribute vec4 vPosition;    \n"
       "void main()                  \n"
       "{                            \n"
       "   gl_Position = vPosition;  \n"
       "}                            \n";
    
-   GLbyte fShaderStr[] =  
+   const char* fShaderStr =
       "precision mediump float;\n"\
       "void main()                                  \n"
       "{                                            \n"
