@@ -1,3 +1,6 @@
+#Disclaimer
+This is an unofficial Git mirror of the the code from the OpenGL ES 2.0 Programming Guide by Aaftab Munshi, Dan Ginsburg, and Dave Shreiner.  The official SVN mirror is located at [https://code.google.com/p/opengles-book-samples/](https://code.google.com/p/opengles-book-samples/).  Pull requests to this repo will not be accepted.
+
 #Instructions for building the OpenGL ES 2.0 Programming Guide sample code.
 
 ##Supported Platforms
