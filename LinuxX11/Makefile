@@ -1,7 +1,6 @@
 # Straight forward Makefile to compile all examples in a row
 
 INCDIR=-I./Common
-LIBS=-lGLESv2 -lEGL -lm -lX11
 
 COMMONSRC=./Common/esShader.c    \
           ./Common/esTransform.c \
