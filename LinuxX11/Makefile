@@ -33,6 +33,8 @@ all: ./Chapter_2/Hello_Triangle/CH02_HelloTriangle \
      ./Chapter_11/Stencil_Test/CH11_Stencil_Test \
      ./Chapter_13/ParticleSystem/CH13_ParticleSystem
 
+basic: ./Chapter_2/Hello_Triangle/CH02_HelloTriangle
+
 clean:
 	find . -name "CH??_*" | xargs rm -f
 
