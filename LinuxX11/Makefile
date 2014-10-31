@@ -38,7 +38,7 @@ clean:
 	find . -name "CH??_*" | xargs rm -f
 
 ./Chapter_2/Hello_Triangle/CH02_HelloTriangle: ${COMMONSRC} ${COMMONHDR} ${CH02SRC}
-	$(CC) ${COMMONSRC} ${CH02SRC} -o $@.html ${INCDIR} ${LIBS}
+	$(CC) ${COMMONSRC} ${CH02SRC} -o $@.html ${INCDIR} ${LIBS} -g4
 ./Chapter_8/Simple_VertexShader/CH08_SimpleVertexShader: ${COMMONSRC} ${COMMONHDR} ${CH08SRC}
 	$(CC) ${COMMONSRC} ${CH08SRC} -o ./$@ ${INCDIR} ${LIBS}
 ./Chapter_9/Simple_Texture2D/CH09_SimpleTexture2D: ${COMMONSRC} ${COMMONHDR} ${CH09SRC1}
