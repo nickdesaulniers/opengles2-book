@@ -280,26 +280,41 @@ GLboolean ESUTIL_API esCreateWindow ( ESContext *esContext, const char* title, G
    return GL_TRUE;
 }
 
+struct loop_vars_t
+{
+    struct timeval t1;
+    struct timezone tz;
+    float totaltime;
+    unsigned int frames;
+    ESContext* esContext;
+};
+
 static void render ( void *data )
 {
-    gettimeofday(&t2, &tz);
-    deltatime = (float)(t2.tv_sec - t1.tv_sec + (t2.tv_usec - t1.tv_usec) * 1e-6);
-    t1 = t2;
+    struct loop_vars_t* args = (struct loop_vars_t*) data;
+    struct timeval t2;
+    float deltatime;
 
-    if (esContext->updateFunc != NULL)
-        esContext->updateFunc(esContext, deltatime);
-    if (esContext->drawFunc != NULL)
-        esContext->drawFunc(esContext);
+    gettimeofday(&t2, &args->tz);
+    deltatime = (float)(t2.tv_sec - args->t1.tv_sec +
+        (t2.tv_usec - args->t1.tv_usec) * 1e-6);
+    args->t1 = t2;
 
-    eglSwapBuffers(esContext->eglDisplay, esContext->eglSurface);
+    if (args->esContext->updateFunc != NULL)
+        args->esContext->updateFunc(args->esContext, deltatime);
+    if (args->esContext->drawFunc != NULL)
+        args->esContext->drawFunc(args->esContext);
 
-    totaltime += deltatime;
-    frames++;
-    if (totaltime >  2.0f)
+    eglSwapBuffers(args->esContext->eglDisplay, args->esContext->eglSurface);
+
+    args->totaltime += deltatime;
+    args->frames++;
+    if (args->totaltime >  2.0f)
     {
-        printf("%4d frames rendered in %1.4f seconds -> FPS=%3.4f\n", frames, totaltime, frames/totaltime);
-        totaltime -= 2.0f;
-        frames = 0;
+        printf("%4d frames rendered in %1.4f seconds -> FPS=%3.4f\n",
+            args->frames, args->totaltime, args->frames / args->totaltime);
+        args->totaltime -= 2.0f;
+        args->frames = 0;
     }
 }
 
