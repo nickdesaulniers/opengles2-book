@@ -197,9 +197,5 @@ int main ( int argc, char *argv[] )
 
    esRegisterDrawFunc ( &esContext, Draw );
 
-#ifdef __EMSCRIPTEN__
-   Draw(&esContext);
-#else
    esMainLoop ( &esContext );
-#endif
 }
