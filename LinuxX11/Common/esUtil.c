@@ -327,6 +327,12 @@ static void render ( void *data )
 void ESUTIL_API esMainLoop ( ESContext *esContext )
 {
 #ifdef __EMSCRIPTEN__
+    struct loop_vars_t args = {0};
+    args.totaltime = 0.0f;
+    args.frames = 0;
+    args.esContext = esContext;
+    gettimeofday(&args.t1, &args.tz);
+    emscripten_set_main_loop_arg(render, &args, 0, 1);
 #else
     struct timeval t1, t2;
     struct timezone tz;
