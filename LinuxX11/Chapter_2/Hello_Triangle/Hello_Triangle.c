@@ -168,7 +168,15 @@ void Draw ( ESContext *esContext )
    glUseProgram ( userData->programObject );
 
    // Load the vertex data
+#ifdef __EMSCRIPTEN__
+   GLuint vertexPosObject;
+   glGenBuffers(1, &vertexPosObject);
+   glBindBuffer(GL_ARRAY_BUFFER, vertexPosObject);
+   glBufferData(GL_ARRAY_BUFFER, 9 * 4, vVertices, GL_STATIC_DRAW);
+   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+#else
    glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vVertices );
+#endif
    glEnableVertexAttribArray ( 0 );
 
    glDrawArrays ( GL_TRIANGLES, 0, 3 );
