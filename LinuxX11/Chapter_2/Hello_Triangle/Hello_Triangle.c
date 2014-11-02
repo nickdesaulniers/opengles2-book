@@ -145,25 +145,12 @@ int Init ( ESContext *esContext )
    userData->programObject = programObject;
 
    glClearColor ( 0.0f, 0.0f, 0.0f, 0.0f );
-   return GL_TRUE;
-}
 
-///
-// Draw a triangle using the shader pair created in Init()
-//
-void Draw ( ESContext *esContext )
-{
-   UserData *userData = esContext->userData;
-   GLfloat vVertices[] = {  0.0f,  0.5f, 0.0f, 
+   GLfloat vVertices[] = {  0.0f,  0.5f, 0.0f,
                            -0.5f, -0.5f, 0.0f,
                             0.5f, -0.5f, 0.0f };
-      
    // Set the viewport
    glViewport ( 0, 0, esContext->width, esContext->height );
-   
-   // Clear the color buffer
-   glClear ( GL_COLOR_BUFFER_BIT );
-
    // Use the program object
    glUseProgram ( userData->programObject );
 
@@ -179,6 +166,16 @@ void Draw ( ESContext *esContext )
 #endif
    glEnableVertexAttribArray ( 0 );
 
+   return GL_TRUE;
+}
+
+///
+// Draw a triangle using the shader pair created in Init()
+//
+void Draw ( ESContext *esContext )
+{
+   // Clear the color buffer
+   glClear ( GL_COLOR_BUFFER_BIT );
    glDrawArrays ( GL_TRIANGLES, 0, 3 );
 }
 
