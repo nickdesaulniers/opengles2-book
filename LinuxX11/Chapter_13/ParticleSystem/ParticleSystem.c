@@ -45,6 +45,9 @@ typedef struct
    // Current time
    float time;
 
+#ifdef __EMSCRIPTEN__
+   GLuint vertexObject;
+#endif
 } UserData;
 
 ///
@@ -86,7 +89,7 @@ int Init ( ESContext *esContext )
    UserData *userData = esContext->userData;
    int i;
    
-   GLbyte vShaderStr[] =
+   const char* vShaderStr =
       "uniform float u_time;		                           \n"
       "uniform vec3 u_centerPosition;                       \n"
       "attribute float a_lifetime;                          \n"
@@ -109,7 +112,7 @@ int Init ( ESContext *esContext )
       "  gl_PointSize = ( v_lifetime * v_lifetime ) * 40.0; \n"
       "}";
       
-   GLbyte fShaderStr[] =  
+   const char* fShaderStr =
       "precision mediump float;                             \n"
       "uniform vec4 u_color;		                           \n"
       "varying float v_lifetime;                            \n"
@@ -162,12 +165,22 @@ int Init ( ESContext *esContext )
    // Initialize time to cause reset on first update
    userData->time = 1.0f;
 
+#ifdef __EMSCRIPTEN__
+   glGenBuffers(1, &userData->vertexObject);
+   glBindBuffer(GL_ARRAY_BUFFER, userData->vertexObject);
+   glBufferData(GL_ARRAY_BUFFER, NUM_PARTICLES * PARTICLE_SIZE * 4,
+       userData->particleData, GL_STATIC_DRAW);
+#endif
+
    userData->textureId = LoadTexture ( "./Chapter_13/ParticleSystem/smoke.tga" );
    if ( userData->textureId <= 0 )
    {
       return FALSE;
    }
    
+   // Use the program object
+   glUseProgram ( userData->programObject );
+
    return TRUE;
 }
 
@@ -220,10 +233,16 @@ void Draw ( ESContext *esContext )
    // Clear the color buffer
    glClear ( GL_COLOR_BUFFER_BIT );
 
-   // Use the program object
-   glUseProgram ( userData->programObject );
-
    // Load the vertex attributes
+#ifdef __EMSCRIPTEN__
+   glBindBuffer(GL_ARRAY_BUFFER, userData->vertexObject);
+   glVertexAttribPointer(userData->lifetimeLoc, 1, GL_FLOAT, GL_FALSE,
+       PARTICLE_SIZE * sizeof(GLfloat), (const GLvoid*) 0);
+   glVertexAttribPointer(userData->endPositionLoc, 3, GL_FLOAT, GL_FALSE,
+       PARTICLE_SIZE * sizeof(GL_FLOAT), (const GLvoid*) 4);
+   glVertexAttribPointer(userData->startPositionLoc, 3, GL_FLOAT, GL_FALSE,
+       PARTICLE_SIZE * sizeof(GL_FLOAT), (const GLvoid*) 16);
+#else
    glVertexAttribPointer ( userData->lifetimeLoc, 1, GL_FLOAT, 
                            GL_FALSE, PARTICLE_SIZE * sizeof(GLfloat), 
                            userData->particleData );
@@ -235,7 +254,7 @@ void Draw ( ESContext *esContext )
    glVertexAttribPointer ( userData->startPositionLoc, 3, GL_FLOAT,
                            GL_FALSE, PARTICLE_SIZE * sizeof(GLfloat),
                            &userData->particleData[4] );
-
+#endif
    
    glEnableVertexAttribArray ( userData->lifetimeLoc );
    glEnableVertexAttribArray ( userData->endPositionLoc );
@@ -247,7 +266,9 @@ void Draw ( ESContext *esContext )
    // Bind the texture
    glActiveTexture ( GL_TEXTURE0 );
    glBindTexture ( GL_TEXTURE_2D, userData->textureId );
+#ifndef __EMSCRIPTEN__
    glEnable ( GL_TEXTURE_2D );
+#endif
 
    // Set the sampler texture unit to 0
    glUniform1i ( userData->samplerLoc, 0 );
