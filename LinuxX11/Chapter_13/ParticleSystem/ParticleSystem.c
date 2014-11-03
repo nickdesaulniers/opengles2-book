@@ -162,7 +162,7 @@ int Init ( ESContext *esContext )
    // Initialize time to cause reset on first update
    userData->time = 1.0f;
 
-   userData->textureId = LoadTexture ( "smoke.tga" );
+   userData->textureId = LoadTexture ( "./Chapter_13/ParticleSystem/smoke.tga" );
    if ( userData->textureId <= 0 )
    {
       return FALSE;

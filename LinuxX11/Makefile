@@ -34,6 +34,8 @@ all: ./Chapter_2/Hello_Triangle/CH02_HelloTriangle \
 
 basic: ./Chapter_2/Hello_Triangle/CH02_HelloTriangle
 
+advanced: ./Chapter_13/ParticleSystem/CH13_ParticleSystem
+
 clean:
 	find . -name "CH??_*" | xargs rm -f
 
@@ -58,4 +60,4 @@ clean:
 ./Chapter_13/Noise3D/CH13_Noise3D: ${COMMONSRC} ${COMMONHDR} ${CH13SRC1}
 	$(CC) ${COMMONSRC} ${CH13SRC1} -o ./$@ ${INCDIR} ${LIBS}
 ./Chapter_13/ParticleSystem/CH13_ParticleSystem: ${COMMONSRC} ${COMMONHDR} ${CH13SRC2}
-	$(CC) ${COMMONSRC} ${CH13SRC2} -o ./$@ ${INCDIR} ${LIBS}
+	$(CC) ${COMMONSRC} ${CH13SRC2} -o $@.html ${INCDIR} ${LIBS} --preload-file ./Chapter_13/ParticleSystem/smoke.tga -g4
