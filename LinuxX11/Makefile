@@ -60,5 +60,5 @@ clean:
 ./Chapter_13/Noise3D/CH13_Noise3D: ${COMMONSRC} ${COMMONHDR} ${CH13SRC1}
 	$(CC) ${COMMONSRC} ${CH13SRC1} -o ./$@ ${INCDIR} ${LIBS}
 ./Chapter_13/ParticleSystem/CH13_ParticleSystem: ${COMMONSRC} ${COMMONHDR} ${CH13SRC2}
-	$(CC) ${COMMONSRC} ${CH13SRC2} -o ../../../../$@.html ${INCDIR} ${LIBS} --preload-file ./Chapter_13/ParticleSystem/smoke.tga --shell-file ../../../memory_profiler_shell.html
+	$(CC) ${COMMONSRC} ${CH13SRC2} -o $@.html ${INCDIR} ${LIBS} --preload-file ./Chapter_13/ParticleSystem/smoke.tga --shell-file ../../../memory_profiler_shell.html
 
